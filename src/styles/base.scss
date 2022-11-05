@@ -1,0 +1,64 @@
+@import "./fonts";
+@import "./variables";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+body {
+  overflow: auto;
+  color: $text-color;
+  background: $bg-color;
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  line-height: 1.6;
+  // font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  width: 100%;
+  max-width: 1332px;
+  margin: 0 auto;
+  padding: 0 16px;
+  @media (min-width: $md) {
+    padding: 0 24px;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: 0.4s;
+  @media (min-width: $md) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
+svg {
+  stroke: $text-color;
+  fill: transparent;
+}
+button {
+  outline: none;
+  transition: 0.4s;
+  @media (min-width: $md) {
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}

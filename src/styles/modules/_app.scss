@@ -1,0 +1,25 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  &__header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $header-mobile-height;
+    @media (min-width: $md) {
+      height: $header-height;
+    }
+  }
+  &__main {
+    flex: 1 1 auto;
+    margin-top: $header-mobile-height;
+    @media (min-width: $md) {
+      margin-top: $header-height;
+    }
+  }
+  &__footer {
+    flex: 0 0;
+  }
+}
