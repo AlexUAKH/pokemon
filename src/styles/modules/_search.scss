@@ -1,6 +1,6 @@
 .search {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin-top: 10px;
   gap: 6px;
   &__input {
@@ -43,7 +43,5 @@
     &:hover {
       opacity: 0.5;
     }
-  }
-  &__search {
   }
 }

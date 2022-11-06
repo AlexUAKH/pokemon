@@ -4,10 +4,7 @@ import Search from "../components/Search";
 import TypesFilter from "../components/TypesFilter";
 import { useAppDispatch } from "../hooks/appDispatch";
 import { useAppSelector } from "../hooks/appSelector";
-import {
-  fetchAllPokemons,
-  selectAllPokemons,
-} from "../store/slices/pokemonSlice";
+import { selectAllPokemons } from "../store/slices/pokemonSlice";
 
 interface PokemonListProps {}
 
@@ -16,9 +13,9 @@ const PokemonList: FC<PokemonListProps> = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const getAll = () => {
-      dispatch(fetchAllPokemons());
-    };
+    // const getAll = () => {
+    //   dispatch(fetchAllPokemons());
+    // };
     // getAll();
   }, [dispatch]);
 
