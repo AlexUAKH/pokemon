@@ -29,7 +29,6 @@ export const useAxios = <T = any>(configObj: UseAxiosConfigObj) => {
           ...requestConfig,
           signal: controller.signal,
         });
-        console.log("useAxi");
 
         setResponse(res.data);
       } catch (err) {

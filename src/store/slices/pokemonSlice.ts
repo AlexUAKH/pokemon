@@ -66,7 +66,7 @@ const pokemonSlice = createSlice({
   },
 });
 
-export const { addType, delType } = pokemonSlice.actions;
+export const { addType, delType, setSearchQuery } = pokemonSlice.actions;
 
 export default pokemonSlice.reducer;
 
@@ -74,3 +74,6 @@ export const selectAllPokemons = (state: RootState) => state.pokemon.pokemons;
 
 export const selectedTypes = (state: RootState): string =>
   state.pokemon.activeType;
+
+export const getSearchQuery = (state: RootState): string =>
+  state.pokemon.searchQuery;

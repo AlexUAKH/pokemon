@@ -7,7 +7,6 @@ import { usePokemon } from "../hooks/usePokemon";
 const PokemonDetails: FC = () => {
   const { id = "0" } = useParams();
   const { pokemon, loading, error } = usePokemon(id);
-  console.log("render", id);
 
   return (
     <div className="details container">

@@ -57,6 +57,7 @@ svg {
   fill: transparent;
 }
 button {
+  border: none;
   outline: none;
   transition: 0.4s;
   @media (min-width: $md) {

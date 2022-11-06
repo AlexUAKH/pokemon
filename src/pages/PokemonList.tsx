@@ -15,12 +15,9 @@ const PokemonList: FC<PokemonListProps> = () => {
   const pokemons = useAppSelector(selectAllPokemons);
   const dispatch = useAppDispatch();
 
-  // console.log("pok: ", pokemons);
-
   useEffect(() => {
-    const getAll = async () => {
-      const r = await dispatch(fetchAllPokemons());
-      console.log("log: ", r);
+    const getAll = () => {
+      dispatch(fetchAllPokemons());
     };
     // getAll();
   }, [dispatch]);
