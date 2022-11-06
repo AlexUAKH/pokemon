@@ -22,7 +22,7 @@ const PokemonList: FC<PokemonListProps> = () => {
       const r = await dispatch(fetchAllPokemons());
       console.log("log: ", r);
     };
-    getAll();
+    // getAll();
   }, [dispatch]);
 
   return (
@@ -30,7 +30,7 @@ const PokemonList: FC<PokemonListProps> = () => {
       <TypesFilter />
       <Search />
       <div className="pokemons__list">
-        {pokemons &&
+        {pokemons.length > 0 &&
           pokemons.map((pokemon: any) => (
             <div className="" key={pokemon.name}>
               <div className="">{pokemon.name}</div>

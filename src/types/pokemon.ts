@@ -27,7 +27,8 @@ export interface PokemonState {
   pokemons: IPokemonListItem[];
   status: EStatus | null;
   error: string | null;
-  activeTypes: string[];
+  activeType: string;
+  searchQuery: string;
 }
 
 export enum EStatus {

@@ -1,9 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { RootState } from "..";
 import { getAll } from "../../services/pokemonService";
 import {
   EStatus,
-  IPokemon,
+  IPokemonListItem,
   PokemonActionsType,
   PokemonState,
 } from "../../types/pokemon";
@@ -25,15 +26,27 @@ export const fetchAllPokemons = createAsyncThunk(
 );
 
 const initialState: PokemonState = {
-  pokemons: [] as IPokemon[],
+  pokemons: [] as IPokemonListItem[],
   status: null,
   error: null,
+  activeType: "",
+  searchQuery: "",
 };
 
 const pokemonSlice = createSlice({
   name: "pokemon",
   initialState,
-  reducers: {},
+  reducers: {
+    addType: (state, action: PayloadAction<string>) => {
+      state.activeType = action.payload;
+    },
+    delType: (state) => {
+      state.activeType = "";
+    },
+    setSearchQuery: (state, action: PayloadAction<string>) => {
+      state.searchQuery = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllPokemons.fulfilled, (state, action: any) => {
@@ -53,10 +66,11 @@ const pokemonSlice = createSlice({
   },
 });
 
-// export const {fetchAllPokemons} = pokemonSlice.actions;
+export const { addType, delType } = pokemonSlice.actions;
 
 export default pokemonSlice.reducer;
 
-export const selectAllPokemons = (state: any) => {
-  return state.pokemon.pokemons;
-};
+export const selectAllPokemons = (state: RootState) => state.pokemon.pokemons;
+
+export const selectedTypes = (state: RootState): string =>
+  state.pokemon.activeType;
