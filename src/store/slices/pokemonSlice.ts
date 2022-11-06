@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+import { getAll } from "../../services/pokemonService";
 import {
   EStatus,
   IPokemon,
@@ -9,13 +10,14 @@ import {
 
 export const fetchAllPokemons = createAsyncThunk(
   `pokemon/${PokemonActionsType.FETCH_POKEMONS}`,
-  async (limit: number = 20, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = [] as IPokemon[];
-      if (!response) {
+      const response = await getAll();
+
+      if (response.status !== 200) {
         throw new Error("error");
       }
-      return response;
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -36,11 +38,18 @@ const pokemonSlice = createSlice({
     builder
       .addCase(fetchAllPokemons.fulfilled, (state, action: any) => {
         state.status = EStatus.RESOLVED;
-        state.pokemons.push(action.payload);
+        state.pokemons.push(...action.payload.results);
       })
       .addCase(fetchAllPokemons.pending, (state: PokemonState) => {
         state.status = EStatus.LOADING;
-      });
+      })
+      .addCase(
+        fetchAllPokemons.rejected,
+        (state: PokemonState, action: any) => {
+          state.status = EStatus.REJECTED;
+          state.error = action.payload;
+        }
+      );
   },
 });
 
@@ -48,4 +57,6 @@ const pokemonSlice = createSlice({
 
 export default pokemonSlice.reducer;
 
-export const selectAllPokemons = (state: PokemonState) => state.pokemons;
+export const selectAllPokemons = (state: any) => {
+  return state.pokemon.pokemons;
+};
