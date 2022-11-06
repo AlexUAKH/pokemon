@@ -7,21 +7,12 @@ export interface IPokemon {
   moves: string[];
   name: string;
   species: string;
-  sprites: ISprites[];
+  sprites: string;
   stats: IStatsItem[];
-  types: string;
+  types: string[];
   weight: number;
 }
 
-export interface ISprites {
-  back_default: string;
-  back_female: string;
-  back_shiny: string;
-  back_shiny_female: string;
-  front_default: string;
-  front_female: string;
-  front_shiny: string;
-}
 export interface IStatsItem {
   name: string;
   stat: number;
@@ -36,6 +27,7 @@ export interface PokemonState {
   pokemons: IPokemonListItem[];
   status: EStatus | null;
   error: string | null;
+  activeTypes: string[];
 }
 
 export enum EStatus {

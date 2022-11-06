@@ -1,15 +1,22 @@
 import { FC } from "react";
+import { useParams } from "react-router-dom";
 
-import { useAxios } from "../hooks/useAxios";
+import Pokemon from "../components/Pokemon";
+import { usePokemon } from "../hooks/usePokemon";
 
-interface PokemonDetailsProps {}
+const PokemonDetails: FC = () => {
+  const { id = "0" } = useParams();
+  const { pokemon, loading, error } = usePokemon(id);
+  console.log("render", id);
 
-const PokemonDetails: FC<PokemonDetailsProps> = () => {
-  const { response, error, loading } = useAxios({
-    url: "/pokemon/50",
-  });
-
-  return <div className="pokemon container"></div>;
+  return (
+    <div className="details container">
+      {loading && <h3>Loading...</h3>}
+      {error && <h3 className="error">{error}</h3>}
+      {!loading &&
+        (pokemon ? <Pokemon pokemon={pokemon} /> : <h2>Can't find</h2>)}
+    </div>
+  );
 };
 
 export default PokemonDetails;

@@ -9,10 +9,10 @@ export interface UseAxiosConfigObj {
   requestConfig?: AxiosRequestConfig;
 }
 
-export const useAxios = (configObj: UseAxiosConfigObj) => {
-  const { method = "get", url, requestConfig = {} } = configObj;
+export const useAxios = <T = any>(configObj: UseAxiosConfigObj) => {
+  const { method = "get", url, requestConfig = null } = configObj;
 
-  const [response, setResponse] = useState([]);
+  const [response, setResponse] = useState<T | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(0);
@@ -29,14 +29,15 @@ export const useAxios = (configObj: UseAxiosConfigObj) => {
           ...requestConfig,
           signal: controller.signal,
         });
-        console.log(res);
+        console.log("useAxi");
+
         setResponse(res.data);
       } catch (err) {
         let message;
         if (axios.isAxiosError(error) && error.response) {
           message = error.response.data.message;
         } else message = String(error);
-        console.log(message);
+
         setError(message);
       } finally {
         setLoading(false);

@@ -1,0 +1,60 @@
+.pokemon {
+  &__card {
+    border: 1px solid white;
+    max-width: 450px;
+    padding: 16px;
+    background-color: $card-bg-color;
+    color: $card-text-color;
+  }
+  &__img {
+    margin: 0 auto;
+    width: 250px;
+    height: 200px;
+  }
+  &__name {
+    font-weight: 900;
+    font-size: 1.5rem;
+    text-transform: capitalize;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+  &__title {
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  &__detailes {
+  }
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    &:not(:last-child) {
+      margin-bottom: 5px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid rgb(220, 214, 214);
+    }
+  }
+  &__row-title {
+    flex: 0 0 30%;
+    font-weight: 500;
+  }
+  &__row-value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  &__stats {
+    display: flex;
+    column-gap: 5px;
+  }
+  &__stats-values {
+    display: flex;
+    gap: 15px;
+    text-transform: capitalize;
+    align-items: center;
+  }
+}
