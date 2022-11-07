@@ -1,10 +1,11 @@
 .type-filter {
+  padding: 0.5rem;
   display: flex;
   column-gap: 10px;
-  margin-top: 10px;
+  margin-top: 0.5rem;
   flex-wrap: wrap;
   row-gap: 5px;
-  max-height: 200px;
+  max-height: 220px;
   overflow-y: auto;
 
   &__item {
@@ -12,7 +13,7 @@
     border-radius: 15px;
     padding: 3px 15px;
     cursor: pointer;
-    transition: all 0.4s ease-out;
+    transition: all 0.3s ease-in-out;
     position: relative;
     &.active {
       background-color: $accent;

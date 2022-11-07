@@ -25,13 +25,15 @@ export interface IPokemonListItem {
 
 export interface PokemonState {
   pokemons: IPokemonListItem[];
-  status: EStatus | null;
+  filteredPokemons: IPokemonListItem[];
+  status: EStatus;
   error: string | null;
   activeType: string;
   searchQuery: string;
 }
 
 export enum EStatus {
+  IDLE = "idle",
   LOADING = "loading",
   RESOLVED = "resolved",
   REJECTED = "rejected",

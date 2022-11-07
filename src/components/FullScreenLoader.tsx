@@ -1,13 +1,16 @@
 import { FC } from "react";
 
+import Loader from "./Loader";
+
 const FullScreenLoader: FC = () => {
   return (
     <div className="fullLoader">
-      <div className="fullLoader__spinner">
+      <Loader />
+      {/* <div className="fullLoader__spinner">
         <div></div>
         <div></div>
         <div></div>
-      </div>
+      </div> */}
     </div>
   );
 };

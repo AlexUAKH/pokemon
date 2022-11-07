@@ -1,8 +1,12 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, KeyboardEvent } from "react";
 
 import { useAppDispatch } from "../hooks/appDispatch";
 import { useAppSelector } from "../hooks/appSelector";
-import { getSearchQuery, setSearchQuery } from "../store/slices/pokemonSlice";
+import {
+  filterByName,
+  getSearchQuery,
+  setSearchQuery,
+} from "../store/slices/pokemonSlice";
 
 interface SearchProps {}
 
@@ -16,6 +20,15 @@ const Search: FC<SearchProps> = () => {
   };
   const clear = () => {
     dispatch(setSearchQuery(""));
+    dispatch(filterByName());
+  };
+
+  const handleEnter = (e: KeyboardEvent) => {
+    if (e.key === "Enter") search();
+  };
+
+  const search = () => {
+    dispatch(filterByName());
   };
 
   return (
@@ -25,6 +38,7 @@ const Search: FC<SearchProps> = () => {
           className=""
           type="text"
           onChange={handleChange}
+          onKeyDown={handleEnter}
           value={searchQuery}
         />
         {searchQuery && (
@@ -33,7 +47,11 @@ const Search: FC<SearchProps> = () => {
           </button>
         )}
       </div>
-      <button className="search__search btn" disabled={searchQuery === ""}>
+      <button
+        onClick={search}
+        className="search__search btn"
+        disabled={searchQuery === ""}
+      >
         search
       </button>
     </div>

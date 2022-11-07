@@ -27,7 +27,8 @@ export const fetchAllPokemons = createAsyncThunk(
 
 const initialState: PokemonState = {
   pokemons: [] as IPokemonListItem[],
-  status: null,
+  filteredPokemons: [] as IPokemonListItem[],
+  status: EStatus.IDLE,
   error: null,
   activeType: "",
   searchQuery: "",
@@ -43,8 +44,13 @@ const pokemonSlice = createSlice({
     delType: (state) => {
       state.activeType = "";
     },
-    setSearchQuery: (state, action: PayloadAction<string>) => {
-      state.searchQuery = action.payload;
+    setSearchQuery: (state, { payload }: PayloadAction<string>) => {
+      state.searchQuery = payload;
+    },
+    filterByName: (state) => {
+      state.filteredPokemons = state.pokemons.filter((pokemon) =>
+        pokemon.name.includes(state.searchQuery)
+      );
     },
   },
   extraReducers: (builder) => {
@@ -52,6 +58,7 @@ const pokemonSlice = createSlice({
       .addCase(fetchAllPokemons.fulfilled, (state, action: any) => {
         state.status = EStatus.RESOLVED;
         state.pokemons.push(...action.payload.results);
+        state.filteredPokemons.push(...action.payload.results.slice(0, 20));
       })
       .addCase(fetchAllPokemons.pending, (state: PokemonState) => {
         state.status = EStatus.LOADING;
@@ -66,11 +73,15 @@ const pokemonSlice = createSlice({
   },
 });
 
-export const { addType, delType, setSearchQuery } = pokemonSlice.actions;
+export const { addType, delType, setSearchQuery, filterByName } =
+  pokemonSlice.actions;
 
 export default pokemonSlice.reducer;
 
-export const selectAllPokemons = (state: RootState) => state.pokemon.pokemons;
+export const getStatus = (state: RootState): EStatus => state.pokemon.status;
+
+export const getFilteredPokemons = (state: RootState): IPokemonListItem[] =>
+  state.pokemon.filteredPokemons;
 
 export const selectedTypes = (state: RootState): string =>
   state.pokemon.activeType;
