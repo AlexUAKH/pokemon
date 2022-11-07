@@ -28,8 +28,11 @@ export interface PokemonState {
   filteredPokemons: IPokemonListItem[];
   status: EStatus;
   error: string | null;
+  types: string[];
   activeType: string;
   searchQuery: string;
+  page: number;
+  limit: number;
 }
 
 export enum EStatus {
@@ -43,15 +46,3 @@ export enum PokemonActionsType {
   FETCH_POKEMONS = "FETCH_POKEMONS",
   FETCH_POKEMONS_ERROR = "FETCH_POKEMONS_ERROR",
 }
-
-interface FetchPokemonsAction {
-  type: PokemonActionsType.FETCH_POKEMONS;
-  payload: IPokemon[];
-}
-
-interface FetchPokemonsErrorAction {
-  type: PokemonActionsType.FETCH_POKEMONS_ERROR;
-  payload: string;
-}
-
-export type PokemonsAction = FetchPokemonsAction | FetchPokemonsErrorAction;

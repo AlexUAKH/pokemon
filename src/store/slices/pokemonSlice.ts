@@ -9,7 +9,7 @@ import {
   PokemonState,
 } from "../../types/pokemon";
 
-export const fetchAllPokemons = createAsyncThunk(
+export const fetchPokemons = createAsyncThunk(
   `pokemon/${PokemonActionsType.FETCH_POKEMONS}`,
   async (_, { rejectWithValue }) => {
     try {
@@ -30,61 +30,90 @@ const initialState: PokemonState = {
   filteredPokemons: [] as IPokemonListItem[],
   status: EStatus.IDLE,
   error: null,
+  types: [],
   activeType: "",
   searchQuery: "",
+  page: 1,
+  limit: 6,
 };
 
 const pokemonSlice = createSlice({
   name: "pokemon",
   initialState,
   reducers: {
+    setTypes: (state, action: PayloadAction<string[]>) => {
+      const types = action.payload.filter((el) => !state.types.includes(el));
+      state.types.push(...types);
+    },
     addType: (state, action: PayloadAction<string>) => {
       state.activeType = action.payload;
     },
     delType: (state) => {
       state.activeType = "";
     },
-    setSearchQuery: (state, { payload }: PayloadAction<string>) => {
-      state.searchQuery = payload;
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
+      state.types = [];
+      state.activeType = "";
+      if (action.payload === "") state.page = 1;
     },
-    filterByName: (state) => {
-      state.filteredPokemons = state.pokemons.filter((pokemon) =>
-        pokemon.name.includes(state.searchQuery)
-      );
+    nextPage: (state) => {
+      state.page++;
+      state.types = [];
+      state.activeType = "";
+    },
+    prevPage: (state) => {
+      state.page--;
+      state.types = [];
+      state.activeType = "";
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllPokemons.fulfilled, (state, action: any) => {
+      .addCase(fetchPokemons.fulfilled, (state, action: any) => {
         state.status = EStatus.RESOLVED;
         state.pokemons.push(...action.payload.results);
-        state.filteredPokemons.push(...action.payload.results.slice(0, 20));
       })
-      .addCase(fetchAllPokemons.pending, (state: PokemonState) => {
+      .addCase(fetchPokemons.pending, (state: PokemonState) => {
         state.status = EStatus.LOADING;
       })
-      .addCase(
-        fetchAllPokemons.rejected,
-        (state: PokemonState, action: any) => {
-          state.status = EStatus.REJECTED;
-          state.error = action.payload;
-        }
-      );
+      .addCase(fetchPokemons.rejected, (state: PokemonState, action: any) => {
+        state.status = EStatus.REJECTED;
+        state.error = action.payload;
+      });
   },
 });
 
-export const { addType, delType, setSearchQuery, filterByName } =
-  pokemonSlice.actions;
+export const {
+  setTypes,
+  addType,
+  delType,
+  setSearchQuery,
+  nextPage,
+  prevPage,
+} = pokemonSlice.actions;
 
 export default pokemonSlice.reducer;
 
+// selectors
+// TODO move to separate file
+
 export const getStatus = (state: RootState): EStatus => state.pokemon.status;
 
-export const getFilteredPokemons = (state: RootState): IPokemonListItem[] =>
-  state.pokemon.filteredPokemons;
+export const getPokemons = (state: RootState): IPokemonListItem[] => {
+  return state.pokemon.pokemons;
+};
 
-export const selectedTypes = (state: RootState): string =>
+export const getFilteredPokemons = (state: RootState): IPokemonListItem[] => {
+  return state.pokemon.filteredPokemons;
+};
+
+export const getTypes = (state: RootState): string[] => state.pokemon.types;
+
+export const selectedType = (state: RootState): string =>
   state.pokemon.activeType;
 
 export const getSearchQuery = (state: RootState): string =>
   state.pokemon.searchQuery;
+
+export const getPage = (state: RootState): number => state.pokemon.page;

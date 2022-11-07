@@ -1,27 +1,22 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
 import { useAppDispatch } from "../hooks/appDispatch";
 import { useAppSelector } from "../hooks/appSelector";
-import { useAxios } from "../hooks/useAxios";
-import { addType, delType, selectedTypes } from "../store/slices/pokemonSlice";
+import {
+  addType,
+  delType,
+  getTypes,
+  selectedType,
+} from "../store/slices/pokemonSlice";
 
 import TypesFilterItem from "./TypesFilterItem";
 
 interface TypesFilterProps {}
 
 const TypesFilter: FC<TypesFilterProps> = () => {
-  const { response } = useAxios({ url: "/type" });
-  const [types, setTypes] = useState<string[]>([]);
-  const activeType = useAppSelector(selectedTypes);
+  const types = useAppSelector(getTypes);
+  const activeType = useAppSelector(selectedType);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (response) {
-      const types = response.results.map((res: any) => res.name);
-
-      setTypes(types);
-    }
-  }, [response]);
 
   const handleTypeCheck = (type: string) => {
     if (activeType === type) {
@@ -33,6 +28,7 @@ const TypesFilter: FC<TypesFilterProps> = () => {
 
   return (
     <nav className="type-filter">
+      Types:
       {types &&
         types.map((type: string) => (
           <TypesFilterItem
