@@ -1,6 +1,8 @@
 import { FC, useEffect, useMemo } from "react";
 
 import Loader from "../components/Loader";
+import PageLimit from "../components/PageLimit";
+import Pagination from "../components/Pagination";
 import PokemonListItem from "../components/PokemonListItem";
 import Search from "../components/Search";
 import TypesFilter from "../components/TypesFilter";
@@ -8,12 +10,11 @@ import { useAppDispatch } from "../hooks/appDispatch";
 import { useAppSelector } from "../hooks/appSelector";
 import {
   fetchPokemons,
+  getLimit,
   getPage,
   getPokemons,
   getSearchQuery,
   getStatus,
-  nextPage,
-  prevPage,
 } from "../store/slices/pokemonSlice";
 import { EStatus, IPokemonListItem } from "../types/pokemon";
 
@@ -24,10 +25,10 @@ const PokemonList: FC<PokemonListProps> = () => {
   const status = useAppSelector(getStatus);
   const searchQuery = useAppSelector(getSearchQuery);
   const page = useAppSelector(getPage);
+  const perPage = useAppSelector(getLimit);
 
   const dispatch = useAppDispatch();
 
-  const perPage = 6;
   const end = useMemo<number>(() => perPage * page, [page, perPage]);
   const start = useMemo<number>(() => perPage * (page - 1), [page, perPage]);
 
@@ -55,7 +56,10 @@ const PokemonList: FC<PokemonListProps> = () => {
   return (
     <section className="pokemons container">
       <TypesFilter />
-      <Search />
+      <div className="pokemons__params">
+        <Search />
+        <PageLimit />
+      </div>
       <div className="pokemons__list">
         {status === EStatus.LOADING && <Loader />}
         {status === EStatus.REJECTED && <h3>Something went wrong</h3>}
@@ -70,23 +74,7 @@ const PokemonList: FC<PokemonListProps> = () => {
           <div>Can't find any creature</div>
         )}
       </div>
-      <div className="pokemons__pagination">
-        <button
-          hidden={page === 1}
-          onClick={() => dispatch(prevPage())}
-          className="pokemons__prev btn"
-        >
-          Prev
-        </button>
-        <span></span>
-        <button
-          hidden={!isHaveNextPage}
-          onClick={() => dispatch(nextPage())}
-          className="pokemons__next btn"
-        >
-          Next
-        </button>
-      </div>
+      <Pagination isHaveNextPage={isHaveNextPage} page={page} />
     </section>
   );
 };

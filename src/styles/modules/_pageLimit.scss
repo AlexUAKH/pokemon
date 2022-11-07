@@ -1,0 +1,13 @@
+.page-limit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  & select {
+    border-radius: 6px;
+  }
+  @media (max-width: $md) {
+    &__label {
+      display: none;
+    }
+  }
+}

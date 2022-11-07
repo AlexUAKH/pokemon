@@ -1,4 +1,11 @@
 .pokemons {
+  &__params {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+  }
   &__list {
     margin-top: 20px;
     display: flex;
@@ -39,11 +46,5 @@
       text-transform: capitalize;
       // white-space: nowrap;
     }
-  }
-  &__pagination {
-    justify-self: stretch;
-    margin: 15px auto;
-    display: flex;
-    justify-content: space-between;
   }
 }

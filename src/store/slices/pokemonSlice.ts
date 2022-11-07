@@ -34,7 +34,7 @@ const initialState: PokemonState = {
   activeType: "",
   searchQuery: "",
   page: 1,
-  limit: 6,
+  limit: 12,
 };
 
 const pokemonSlice = createSlice({
@@ -51,11 +51,11 @@ const pokemonSlice = createSlice({
     delType: (state) => {
       state.activeType = "";
     },
-    setSearchQuery: (state, action) => {
-      state.searchQuery = action.payload;
+    setSearchQuery: (state, action: PayloadAction<string>) => {
+      state.searchQuery = action.payload.trim();
       state.types = [];
       state.activeType = "";
-      if (action.payload === "") state.page = 1;
+      state.page = 1;
     },
     nextPage: (state) => {
       state.page++;
@@ -66,6 +66,11 @@ const pokemonSlice = createSlice({
       state.page--;
       state.types = [];
       state.activeType = "";
+    },
+    setLimit: (state, action: PayloadAction<number>) => {
+      state.limit = action.payload;
+      state.page = 1;
+      state.searchQuery = "";
     },
   },
   extraReducers: (builder) => {
@@ -91,6 +96,7 @@ export const {
   setSearchQuery,
   nextPage,
   prevPage,
+  setLimit,
 } = pokemonSlice.actions;
 
 export default pokemonSlice.reducer;
@@ -117,3 +123,5 @@ export const getSearchQuery = (state: RootState): string =>
   state.pokemon.searchQuery;
 
 export const getPage = (state: RootState): number => state.pokemon.page;
+
+export const getLimit = (state: RootState): number => state.pokemon.limit;

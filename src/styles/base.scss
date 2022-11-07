@@ -67,10 +67,13 @@ button {
   }
 }
 input,
-input:focus {
+input:focus,
+select,
+select:focus {
   outline: none;
 }
-input {
+input,
+select {
   padding: 5px 10px;
 }
 .bage {
