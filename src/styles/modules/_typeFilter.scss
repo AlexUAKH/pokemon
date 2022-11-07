@@ -7,7 +7,7 @@
   row-gap: 5px;
   max-height: 220px;
   overflow-y: auto;
-
+  align-items: center;
   &__item {
     border: 2px solid $accent;
     border-radius: 15px;
