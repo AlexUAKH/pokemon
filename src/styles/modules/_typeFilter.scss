@@ -3,8 +3,9 @@
   display: flex;
   column-gap: 10px;
   margin-top: 0.5rem;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   row-gap: 5px;
+  min-height: 55px;
   max-height: 220px;
   overflow-y: auto;
 

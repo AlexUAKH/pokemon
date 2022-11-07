@@ -6,11 +6,6 @@ const FullScreenLoader: FC = () => {
   return (
     <div className="fullLoader">
       <Loader />
-      {/* <div className="fullLoader__spinner">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div> */}
     </div>
   );
 };
