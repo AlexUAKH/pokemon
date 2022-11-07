@@ -1,47 +1,56 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo } from "react";
 
 import Loader from "../components/Loader";
-import PokemonListItem from "../components/PokemonListIten";
+import PokemonListItem from "../components/PokemonListItem";
 import Search from "../components/Search";
 import TypesFilter from "../components/TypesFilter";
 import { useAppDispatch } from "../hooks/appDispatch";
 import { useAppSelector } from "../hooks/appSelector";
 import {
-  fetchAllPokemons,
-  getFilteredPokemons,
+  fetchPokemons,
+  getPage,
+  getPokemons,
+  getSearchQuery,
   getStatus,
+  nextPage,
+  prevPage,
 } from "../store/slices/pokemonSlice";
-import { EStatus, IPokemon } from "../types/pokemon";
+import { EStatus, IPokemonListItem } from "../types/pokemon";
 
 interface PokemonListProps {}
 
 const PokemonList: FC<PokemonListProps> = () => {
-  const pokemonsList = useAppSelector(getFilteredPokemons);
+  const pokemons = useAppSelector(getPokemons);
   const status = useAppSelector(getStatus);
+  const searchQuery = useAppSelector(getSearchQuery);
+  const page = useAppSelector(getPage);
+
   const dispatch = useAppDispatch();
-  const [pokemons, setPokemons] = useState<IPokemon[] | null>(null);
-  const [loading, setLoadin] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+
+  const perPage = 6;
+  const end = useMemo<number>(() => perPage * page, [page, perPage]);
+  const start = useMemo<number>(() => perPage * (page - 1), [page, perPage]);
+
+  const filteredList = useMemo<IPokemonListItem[]>(
+    () => pokemons.filter((i) => i.name.includes(searchQuery.toLowerCase())),
+    [searchQuery, pokemons]
+  );
+  const paginatedList = useMemo<IPokemonListItem[]>(
+    () => filteredList.slice(start, end),
+    [start, end, filteredList]
+  );
+
+  const isHaveNextPage = useMemo(
+    () => filteredList.length > end,
+    [end, filteredList]
+  );
 
   useEffect(() => {
     const getAndFilter = async () => {
-      dispatch(fetchAllPokemons());
+      dispatch(fetchPokemons());
     };
     getAndFilter();
   }, [dispatch]);
-
-  useEffect(() => {
-    setLoadin(true);
-    setError("");
-    try {
-      const pokemons: any = [];
-      setPokemons(pokemons);
-    } catch (e) {
-      setError("Error happend");
-    } finally {
-      setLoadin(false);
-    }
-  }, [pokemonsList]);
 
   return (
     <section className="pokemons container">
@@ -53,22 +62,31 @@ const PokemonList: FC<PokemonListProps> = () => {
 
         {status !== EStatus.LOADING &&
           status !== EStatus.REJECTED &&
-          pokemons &&
-          pokemons.length > 0 &&
-          pokemons.map((pokemon: any) => (
-            <PokemonListItem
-              name={pokemon.name}
-              key={pokemon.name}
-              img="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/50.png"
-              type="pppoop"
-            />
+          paginatedList.length > 0 &&
+          paginatedList.map((pokemon: any) => (
+            <PokemonListItem name={pokemon.name} key={pokemon.name} />
           ))}
-        {status !== EStatus.LOADING && !pokemons && (
+        {status !== EStatus.LOADING && paginatedList.length === 0 && (
           <div>Can't find any creature</div>
         )}
       </div>
-      {error && <div>Can't find any creature</div>}
-      <button className="btn">{loading ? <Loader /> : "more"}</button>
+      <div className="pokemons__pagination">
+        <button
+          hidden={page === 1}
+          onClick={() => dispatch(prevPage())}
+          className="pokemons__prev btn"
+        >
+          Prev
+        </button>
+        <span></span>
+        <button
+          hidden={!isHaveNextPage}
+          onClick={() => dispatch(nextPage())}
+          className="pokemons__next btn"
+        >
+          Next
+        </button>
+      </div>
     </section>
   );
 };

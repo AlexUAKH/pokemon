@@ -1,6 +1,7 @@
 import { FC } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
+import Loader from "../components/Loader";
 import Pokemon from "../components/Pokemon";
 import { usePokemon } from "../hooks/usePokemon";
 
@@ -10,10 +11,16 @@ const PokemonDetails: FC = () => {
 
   return (
     <div className="details container">
-      {loading && <h3>Loading...</h3>}
-      {error && <h3 className="error">{error}</h3>}
-      {!loading &&
-        (pokemon ? <Pokemon pokemon={pokemon} /> : <h2>Can't find</h2>)}
+      <Link to="/" className="details__link btn">
+        To main
+      </Link>
+      <div className="details__content">
+        {loading && <Loader />}
+        {!loading && error && <h3 className="error">{error}</h3>}
+        {!loading && pokemon && Object.keys(pokemon).length && (
+          <Pokemon pokemon={pokemon} />
+        )}
+      </div>
     </div>
   );
 };

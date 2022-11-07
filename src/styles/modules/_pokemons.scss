@@ -3,24 +3,29 @@
     margin-top: 20px;
     display: flex;
     column-gap: 10px;
-    row-gap: 5px;
+    row-gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
   }
   &__list-item {
     display: flex;
     align-items: center;
+    padding: 2px;
     background-color: $list-item-bg-color;
     border: 1px solid $card-bg-color;
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
+    cursor: pointer;
     width: 350px;
     border-radius: 5px;
+    min-height: $list-height;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      // transform: scale3d(1.1, 1.2, 1.2);
+      opacity: 0.7;
+    }
   }
   &__list-item-img {
-    width: 60px;
-    height: 60px;
+    width: $list-height;
+    height: $list-height;
     flex-shrink: 0;
   }
   &__list-item-name {
@@ -32,7 +37,13 @@
     overflow: hidden;
     & span {
       text-transform: capitalize;
-      white-space: nowrap;
+      // white-space: nowrap;
     }
+  }
+  &__pagination {
+    justify-self: stretch;
+    margin: 15px auto;
+    display: flex;
+    justify-content: space-between;
   }
 }
